@@ -1,16 +1,65 @@
-# coursier/setup-action
+# Coursier setup GitHub Action
 
-Use Coursier to install JVM and Scala apps
+A GitHub Action to install Coursier and use it to install Java and Scala CLI tools.
 
-Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at [https://github.com/coursier/setup-action](https://github.com/coursier/setup-action).
+It can be useful if you want to install a specific version of JVM or use a build tool like `mill` or `seed`.
 
-## Versions
+Inspired by [olafurpg/setup-scala](https://github.com/olafurpg/setup-scala) and the blog post [Single command Scala setup](https://alexarchambault.github.io/posts/2020-09-21-cs-setup.html) by Alex Archambault (author of Coursier).
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v2.0.1 | [`v2.0.1`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.1) | [`7fdbcb2`](https://github.com/coursier/setup-action/commit/7fdbcb2ec74047d6f6270a85967bc8ff1cebe626) |
-| v2.0.3 | [`v2.0.3`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.3) | [`7acb5c9`](https://github.com/coursier/setup-action/commit/7acb5c9ea69bc1a1bb185ec45ebce2ac114f3628) |
-| v3.0.0 | [`v3.0.0`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.0) | [`fd1707a`](https://github.com/coursier/setup-action/commit/fd1707a76b027efdfb66ca79318b4d29b72e5a02) |
+## Features
+
+- run it on any platform: Linux, MacOS, Windows
+- install [any JVM](https://get-coursier.io/docs/cli-java.html#jvm-index) you need
+- setup the build tool of your choice: sbt, mill, seed, etc.
+- install other common Scala CLI tools: Ammonite, Bloop, giter8, [etc.](https://github.com/coursier/apps/tree/master/apps/resources)
+
+## Inputs
+
+- `jvm` (optional): JVM to install
+  - one of the options from `cs java --available`.
+  - if left empty either the existing JVM will be used or Coursier will install its default JVM.
+
+- `jvm-index` (optional): The JVM index source
+  - arbitrary URL containing the JVM index source like in `cs java --available --jvm-index https://url/of/your/index.json`.
+  - if left empty the coursier index will be used as default JVM index source
+
+- `apps` (optional): Scala apps to install (`sbtn` by default)
+  - space separated list of app names (from the [main channel](https://github.com/coursier/apps))
+
+- `customRepositories` (optional): ''
+  - Pipe separated list of [repositories](https://get-coursier.io/docs/other-repositories) to supply to coursier
+
+- `disableDefaultRepos` (optional): 'false'
+  - Whether or not to pass the --no-default flag to coursier
+
+### Example with custom inputs
+
+```yml
+  steps:
+    - uses: actions/checkout@v2
+    - uses: coursier/setup-action@v1
+      with:
+        jvm: adopt:11
+        jvm-index: https://url/of/your/index.json
+        apps: sbtn bloop ammonite
+        disableDefaultRepos: true
+        customRepositories: https://packages.corp.com/maven
+```
+
+## Outputs
+
+- `cs-version`: version of the installed Coursier (should be the latest available)
+
+## Caching
+
+This action should work well with the official Coursier [cache-action](https://github.com/coursier/cache-action). For example:
+
+```yml
+  steps:
+    - uses: actions/checkout@v2
+    - uses: coursier/cache-action@v6
+    - uses: coursier/setup-action@v1
+```
 
 ## Privacy
 
