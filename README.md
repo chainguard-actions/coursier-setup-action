@@ -8,6 +8,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 | Version | Tag | Upstream commit |
 |---------|-----|-----------------|
+| v2.0.0 | [`v2.0.0`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.0) | [`0ed4d7e`](https://github.com/coursier/setup-action/commit/0ed4d7e7c42eae80e14370990582092c749253c4) |
 | v2.0.1 | [`v2.0.1`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.1) | [`7fdbcb2`](https://github.com/coursier/setup-action/commit/7fdbcb2ec74047d6f6270a85967bc8ff1cebe626) |
 | v2.0.2 | [`v2.0.2`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.2) | [`f7be3eb`](https://github.com/coursier/setup-action/commit/f7be3eb3dcef84a4e16fc8cd75c87beb2e5cbcc9) |
 | v2.0.3 | [`v2.0.3`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.3) | [`7acb5c9`](https://github.com/coursier/setup-action/commit/7acb5c9ea69bc1a1bb185ec45ebce2ac114f3628) |
