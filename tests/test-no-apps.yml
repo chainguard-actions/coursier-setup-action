@@ -1,0 +1,32 @@
+name: Test no apps (coursier only)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          apps: ''
+      - name: Assert cs-version output is set
+        env:
+          CS_VERSION: ${{ steps.action.outputs.cs-version }}
+        run: |
+          echo "cs-version: $CS_VERSION"
+          if [ -z "$CS_VERSION" ]; then
+            echo "FAIL: cs-version output is empty"
+            exit 1
+          fi
+          echo "PASS: cs-version is '$CS_VERSION'"
+      - name: Assert cs-version looks like a version string
+        env:
+          CS_VERSION: ${{ steps.action.outputs.cs-version }}
+        run: |
+          echo "cs-version: $CS_VERSION"
+          if ! echo "$CS_VERSION" | grep -qE '^[0-9]+\.[0-9]+'; then
+            echo "FAIL: cs-version '$CS_VERSION' does not look like a version number"
+            exit 1
+          fi
+          echo "PASS: cs-version format is valid"

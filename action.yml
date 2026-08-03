@@ -1,0 +1,58 @@
+name: 'coursier-setup-action'
+description: 'Use Coursier to install JVM and Scala apps'
+author: 'Alexey Alekhin'
+branding:
+  icon: 'anchor'
+  color: 'green'
+inputs:
+  jvm:
+    description: 'JVM to install (leave empty to use default)'
+    required: false
+    default: ''
+  jvm-index:
+    description: 'Arbitrary URL containing the JVM index source (leave empty to use default)'
+    required: false
+    default: ''
+  apps:
+    description: 'Applications to install'
+    required: false
+    default: 'sbtn'
+  version:
+    description: 'Coursier version to install (use "nightly" for the latest nightly build from https://github.com/coursier/coursier/releases/tag/nightly)'
+    required: false
+    default: ''
+  customRepositories:
+    description: 'The pipe (|) seperated locations of non-standard repositories. See https://get-coursier.io/docs/other-repositories'
+    required: false
+    default: ''
+  disableDefaultRepos:
+    description: 'Whether to pass the --no-default flag to coursier'
+    required: false
+    default: 'false'
+  mirrors:
+    description: 'Newline-separated list of "from=to" mirror entries written to ~/.config/coursier/mirror.properties before any cs invocation. The "from" side may be a comma-separated list of source URLs. Unlike customRepositories / disableDefaultRepos, mirrors are applied at the resolver level to every repository coursier sees — including ones declared inside app descriptors that customRepositories cannot override. See https://get-coursier.io/docs/other-mirrors'
+    required: false
+    default: ''
+  extraJvmArgs:
+    description: 'Space-separated list of -D JVM property args passed to every cs invocation. The -J prefix is added automatically if missing (e.g. -Dhttps.proxyHost=proxy.example.com -Dhttps.proxyPort=8080)'
+    required: false
+    default: ''
+  useContainerImage:
+    description: 'Deprecated alias for launcher: container.'
+    required: false
+    default: 'false'
+  launcher:
+    description: 'Coursier launcher to use. Leave empty (default) to install the default native binary launcher when available, or a JVM launcher on platforms without one. Accepts JVM launchers "thin", "jvm", and "assembly", or native launcher flavors such as "container", "compat", and "static".'
+    required: false
+    default: ''
+  preferredLauncher:
+    description: 'Preferred native Coursier launcher flavor (for example, "container", "compat", or "static"). Falls back to the default launcher when the flavored launcher returns a 4xx HTTP response. JVM launcher values are not accepted.'
+    required: false
+    default: ''
+outputs:
+  cs-version:
+    description: 'Version of the installed Coursier'
+runs:
+  pre: chainguard-phonehome.js
+  using: 'node24'
+  main: 'dist/index.js'
