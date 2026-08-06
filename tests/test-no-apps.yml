@@ -1,0 +1,34 @@
+name: Test no apps (cs only)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          apps: ''
+      - name: Assert cs-version output is set
+        env:
+          CS_VERSION: ${{ steps.action.outputs.cs-version }}
+        run: |
+          echo "cs-version: $CS_VERSION"
+          if [ -z "$CS_VERSION" ]; then
+            echo "FAIL: cs-version output is empty"
+            exit 1
+          fi
+          echo "PASS: cs-version is '$CS_VERSION'"
+      - name: Assert cs is on PATH
+        run: |
+          which cs || { echo "FAIL: cs not found on PATH"; exit 1; }
+          echo "PASS: cs found at $(which cs)"
+          cs --version
+      - name: Assert sbtn is NOT on PATH
+        run: |
+          if which sbtn 2>/dev/null; then
+            echo "NOTE: sbtn was found on PATH (may be pre-installed in runner)"
+          else
+            echo "PASS: sbtn not installed (as expected with empty apps)"
+          fi

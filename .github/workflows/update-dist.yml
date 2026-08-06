@@ -1,0 +1,44 @@
+name: Update dist
+on:
+  push:
+    branches:
+    - main
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  update-dist:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7
+        with:
+          node-version: 24
+          cache: 'npm'
+
+      - name: Build
+        shell: bash -l {0}
+        run: |
+          npm ci
+          test "$OSTYPE" != "msys" || npm run format
+          npm run all
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@5f6978faf089d4d20b00c7766989d076bb2fc7f1 # v8
+        with:
+          commit-message: Update dist
+          author: GitHub <noreply@github.com>
+          delete-branch: true
+          title: Update dist
+
+      - name: Check Pull Request
+        env:
+          PR_NUMBER: ${{ steps.cpr.outputs.pull-request-number }}
+          PR_URL: ${{ steps.cpr.outputs.pull-request-url }}
+        run: |
+          echo "Pull Request Number - $PR_NUMBER"
+          echo "Pull Request URL - $PR_URL"

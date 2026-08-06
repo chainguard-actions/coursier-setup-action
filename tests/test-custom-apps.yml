@@ -1,0 +1,27 @@
+name: Test custom apps installation
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          apps: 'scalafmt'
+      - name: Assert cs-version output is set
+        env:
+          CS_VERSION: ${{ steps.action.outputs.cs-version }}
+        run: |
+          echo "cs-version: $CS_VERSION"
+          if [ -z "$CS_VERSION" ]; then
+            echo "FAIL: cs-version output is empty"
+            exit 1
+          fi
+          echo "PASS: cs-version is '$CS_VERSION'"
+      - name: Assert scalafmt is on PATH
+        run: |
+          which scalafmt || { echo "FAIL: scalafmt not found on PATH"; exit 1; }
+          echo "PASS: scalafmt found at $(which scalafmt)"
+          scalafmt --version
