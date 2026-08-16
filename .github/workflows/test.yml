@@ -1,0 +1,88 @@
+name: Test
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-15-intel, windows-latest]
+        jvm: ['17', '25']
+        include:
+          - os: "macos-15"
+            jvm: '21'
+          - os: "ubuntu-24.04-arm"
+            jvm: '21'
+    steps:
+    - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+
+    - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+      with:
+        node-version: 24
+        cache: 'npm'
+
+    - name: Build
+      shell: bash -l {0}
+      run: |
+        npm ci
+        test "$OSTYPE" != "msys" || npm run format
+        npm run all
+
+    # test extraJvmArgs — must run before the main setup so that apps and
+    # JVM are not yet cached, forcing cs to fetch over the network and hit
+    # the bogus proxy
+    - name: Test extraJvmArgs passes args to cs
+      uses: ./
+      with:
+        jvm: ${{ matrix.jvm }}
+        extraJvmArgs: -Dhttps.proxyHost=invalid.proxy.local -Dhttps.proxyPort=9999
+      continue-on-error: true
+      id: extra-jvm-args-test
+    - name: Verify extraJvmArgs caused failure
+      shell: bash
+      env:
+        OUTCOME: ${{ steps.extra-jvm-args-test.outcome }}
+      run: |
+        if [ "$OUTCOME" = "failure" ]; then
+          echo "extraJvmArgs correctly passed to cs (proxy caused expected failure)"
+        else
+          echo "::error::extraJvmArgs test should have failed with bogus proxy but didn't"
+          exit 1
+        fi
+
+    # create an sbt file to enable sbt caching
+    - run: echo 'name := "foo"' > build.sbt
+    - id: cs-setup
+      uses: ./
+      with:
+        jvm: ${{ matrix.jvm }}
+        apps: sbt sbtn ammonite bloop
+
+    # - uses: coursier/cache-action@v5
+    - name: Print cs-version
+      env:
+        CS_VERSION: ${{ steps.cs-setup.outputs.cs-version }}
+      run: echo "cs-version=$CS_VERSION"
+    - run: echo $PATH
+
+    # test Java
+    - run: echo $JAVA_HOME
+    - run: java -version
+    - run: cs java -version
+
+    # test installed apps
+    - run: sbtn.bat show name </dev/null
+      shell: bash
+      if: runner.os == 'Windows'
+    - run: sbtn show name
+      if: runner.os != 'Windows'
+    - run: amm --help
+    - run: bloop about
