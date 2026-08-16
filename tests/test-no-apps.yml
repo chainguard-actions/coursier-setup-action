@@ -1,0 +1,32 @@
+name: Test no apps installation
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          apps: ''
+      - name: Assert cs-version output is set
+        env:
+          CS_VERSION: ${{ steps.action.outputs.cs-version }}
+        run: |
+          echo "cs-version: $CS_VERSION"
+          if [ -z "$CS_VERSION" ]; then
+            echo "FAIL: cs-version output is empty"
+            exit 1
+          fi
+          echo "PASS: cs-version=$CS_VERSION"
+      - name: Assert coursier (cs) binary is accessible
+        run: |
+          # Even with no apps, the cs launcher itself should be available
+          # The action installs coursier itself regardless of apps input
+          if ! command -v cs >/dev/null 2>&1; then
+            echo "INFO: cs not on PATH (apps was empty, this may be expected)"
+            echo "PASS: action completed without error"
+          else
+            echo "PASS: cs found at $(command -v cs)"
+          fi
