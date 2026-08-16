@@ -1,0 +1,32 @@
+name: Test no apps (coursier only)
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          apps: ''
+      - name: Assert cs-version output is non-empty
+        env:
+          CS_VERSION: ${{ steps.action.outputs.cs-version }}
+        run: |
+          echo "cs-version: $CS_VERSION"
+          if [ -z "$CS_VERSION" ]; then
+            echo "FAIL: expected cs-version to be non-empty"
+            exit 1
+          fi
+          echo "PASS: cs-version=$CS_VERSION"
+      - name: Assert cs is on PATH
+        run: |
+          echo "which cs: $(which cs || echo 'not found')"
+          if ! command -v cs > /dev/null 2>&1; then
+            echo "FAIL: cs (coursier) not found on PATH"
+            exit 1
+          fi
+          CS_VER=$(cs version 2>/dev/null || cs --version 2>/dev/null || echo "unknown")
+          echo "cs version: $CS_VER"
+          echo "PASS: cs is available"
