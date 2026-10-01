@@ -16,6 +16,7 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 | v3.0.1 | [`v3.0.1`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.1) | [`63a2376`](https://github.com/coursier/setup-action/commit/63a23764316528a1b627103472030d5a16fc6133) |
 | v3.0.2 | [`v3.0.2`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.2) | [`9b7939b`](https://github.com/coursier/setup-action/commit/9b7939bf01fd1185ce2babe16135168361bf2c62) |
 | v3.0.3 | [`v3.0.3`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.3) | [`3174df5`](https://github.com/coursier/setup-action/commit/3174df5c784a0c8724f06b7924b849551c40c39e) |
+| v3.0.4 | [`v3.0.4`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.4) | [`648df96`](https://github.com/coursier/setup-action/commit/648df969f41ef15fda2baba8b37f9fa3d16390a3) |
 
 ## Privacy
 
