@@ -6,17 +6,17 @@ Hardened by [Chainguard](https://www.chainguard.dev) from the upstream action at
 
 ## Versions
 
-| Version | Tag | Upstream commit |
-|---------|-----|-----------------|
-| v2.0.0 | [`v2.0.0`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.0) | [`0ed4d7e`](https://github.com/coursier/setup-action/commit/0ed4d7e7c42eae80e14370990582092c749253c4) |
-| v2.0.1 | [`v2.0.1`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.1) | [`7fdbcb2`](https://github.com/coursier/setup-action/commit/7fdbcb2ec74047d6f6270a85967bc8ff1cebe626) |
-| v2.0.2 | [`v2.0.2`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.2) | [`f7be3eb`](https://github.com/coursier/setup-action/commit/f7be3eb3dcef84a4e16fc8cd75c87beb2e5cbcc9) |
-| v2.0.3 | [`v2.0.3`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.3) | [`7acb5c9`](https://github.com/coursier/setup-action/commit/7acb5c9ea69bc1a1bb185ec45ebce2ac114f3628) |
-| v3.0.0 | [`v3.0.0`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.0) | [`fd1707a`](https://github.com/coursier/setup-action/commit/fd1707a76b027efdfb66ca79318b4d29b72e5a02) |
-| v3.0.1 | [`v3.0.1`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.1) | [`63a2376`](https://github.com/coursier/setup-action/commit/63a23764316528a1b627103472030d5a16fc6133) |
-| v3.0.2 | [`v3.0.2`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.2) | [`9b7939b`](https://github.com/coursier/setup-action/commit/9b7939bf01fd1185ce2babe16135168361bf2c62) |
-| v3.0.3 | [`v3.0.3`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.3) | [`3174df5`](https://github.com/coursier/setup-action/commit/3174df5c784a0c8724f06b7924b849551c40c39e) |
-| v3.0.4 | [`v3.0.4`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.4) | [`648df96`](https://github.com/coursier/setup-action/commit/648df969f41ef15fda2baba8b37f9fa3d16390a3) |
+| Version | Tag | Upstream commit | Hardening report |
+|---------|-----|-----------------|------------------|
+| v2.0.0 | [`v2.0.0`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.0) | [`0ed4d7e`](https://github.com/coursier/setup-action/commit/0ed4d7e7c42eae80e14370990582092c749253c4) | [`HARDENING.md`](https://github.com/chainguard-actions/coursier-setup-action/blob/v2.0.0/HARDENING.md) |
+| v2.0.1 | [`v2.0.1`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.1) | [`7fdbcb2`](https://github.com/coursier/setup-action/commit/7fdbcb2ec74047d6f6270a85967bc8ff1cebe626) | [`HARDENING.md`](https://github.com/chainguard-actions/coursier-setup-action/blob/v2.0.1/HARDENING.md) |
+| v2.0.2 | [`v2.0.2`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.2) | [`f7be3eb`](https://github.com/coursier/setup-action/commit/f7be3eb3dcef84a4e16fc8cd75c87beb2e5cbcc9) | [`HARDENING.md`](https://github.com/chainguard-actions/coursier-setup-action/blob/v2.0.2/HARDENING.md) |
+| v2.0.3 | [`v2.0.3`](https://github.com/chainguard-actions/coursier-setup-action/tree/v2.0.3) | [`7acb5c9`](https://github.com/coursier/setup-action/commit/7acb5c9ea69bc1a1bb185ec45ebce2ac114f3628) | [`HARDENING.md`](https://github.com/chainguard-actions/coursier-setup-action/blob/v2.0.3/HARDENING.md) |
+| v3.0.0 | [`v3.0.0`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.0) | [`fd1707a`](https://github.com/coursier/setup-action/commit/fd1707a76b027efdfb66ca79318b4d29b72e5a02) | [`HARDENING.md`](https://github.com/chainguard-actions/coursier-setup-action/blob/v3.0.0/HARDENING.md) |
+| v3.0.1 | [`v3.0.1`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.1) | [`63a2376`](https://github.com/coursier/setup-action/commit/63a23764316528a1b627103472030d5a16fc6133) | [`HARDENING.md`](https://github.com/chainguard-actions/coursier-setup-action/blob/v3.0.1/HARDENING.md) |
+| v3.0.2 | [`v3.0.2`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.2) | [`9b7939b`](https://github.com/coursier/setup-action/commit/9b7939bf01fd1185ce2babe16135168361bf2c62) | [`HARDENING.md`](https://github.com/chainguard-actions/coursier-setup-action/blob/v3.0.2/HARDENING.md) |
+| v3.0.3 | [`v3.0.3`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.3) | [`3174df5`](https://github.com/coursier/setup-action/commit/3174df5c784a0c8724f06b7924b849551c40c39e) | [`HARDENING.md`](https://github.com/chainguard-actions/coursier-setup-action/blob/v3.0.3/HARDENING.md) |
+| v3.0.4 | [`v3.0.4`](https://github.com/chainguard-actions/coursier-setup-action/tree/v3.0.4) | [`648df96`](https://github.com/coursier/setup-action/commit/648df969f41ef15fda2baba8b37f9fa3d16390a3) | [`HARDENING.md`](https://github.com/chainguard-actions/coursier-setup-action/blob/v3.0.4/HARDENING.md) |
 
 ## Privacy
 
