@@ -1,0 +1,35 @@
+name: Test explicit JVM with no apps
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          jvm: temurin:17
+          apps: ''
+      - name: Assert outputs
+        env:
+          CS_VERSION: ${{ steps.action.outputs.cs-version }}
+          JAVA_HOME_OUT: ${{ steps.action.outputs.java-home }}
+          BIN_DIR: ${{ steps.action.outputs.cs-bin-dir }}
+        run: |
+          echo "cs-version: $CS_VERSION"
+          echo "java-home: $JAVA_HOME_OUT"
+          echo "cs-bin-dir: '$BIN_DIR'"
+          if [ -z "$CS_VERSION" ]; then echo "FAIL: cs-version empty"; exit 1; fi
+          if [ -n "$BIN_DIR" ]; then echo "FAIL: cs-bin-dir should be empty when apps is empty"; exit 1; fi
+          if [ -z "$JAVA_HOME_OUT" ] || [ ! -x "$JAVA_HOME_OUT/bin/java" ]; then echo "FAIL: java not found in java-home"; exit 1; fi
+          "$JAVA_HOME_OUT/bin/java" -version 2>&1 | tee /tmp/jv.txt
+          if ! grep -qE 'version "17' /tmp/jv.txt; then echo "FAIL: expected Java 17"; exit 1; fi
+          echo "PASS"
+      - name: Assert JAVA_HOME exported
+        env:
+          JAVA_HOME_OUT: ${{ steps.action.outputs.java-home }}
+        run: |
+          echo "JAVA_HOME: $JAVA_HOME"
+          if [ "$JAVA_HOME" != "$JAVA_HOME_OUT" ]; then echo "FAIL: JAVA_HOME not exported"; exit 1; fi
+          echo "PASS"

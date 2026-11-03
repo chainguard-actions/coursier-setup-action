@@ -1,0 +1,66 @@
+name: 'coursier-setup-action'
+description: 'Install Coursier, a JVM, and JVM / Scala command-line tools such as sbt, Scala CLI or scalafmt'
+author: 'Alexey Alekhin'
+branding:
+  icon: 'anchor'
+  color: 'green'
+inputs:
+  jvm:
+    description: 'JVM to install, such as "21" or "temurin:21" (see cs java --available). When empty, an existing JAVA_HOME is kept, or Coursier''s default JVM is installed.'
+    required: false
+    default: ''
+  jvm-index:
+    description: 'URL of a custom JVM index (leave empty to use the Coursier JVM index)'
+    required: false
+    default: ''
+  apps:
+    description: 'Whitespace- or newline-separated list of apps to install from the Coursier main and contrib channels (set to an empty string to install none)'
+    required: false
+    default: 'sbtn'
+  version:
+    description: 'Coursier version to install (use "nightly" for the latest nightly build from https://github.com/coursier/coursier/releases/tag/nightly)'
+    required: false
+    default: ''
+  customRepositories:
+    description: 'Pipe-separated (|) list of extra repositories passed to every cs command. See https://get-coursier.io/docs/other-repositories'
+    required: false
+    default: ''
+  disableDefaultRepos:
+    description: 'Set to true to pass --no-default to every cs command, so that only customRepositories are used'
+    required: false
+    default: 'false'
+  mirrors:
+    description: 'Newline-separated list of "from=to" mirror entries written to a mirror file owned by the action (under $RUNNER_TEMP) before any cs invocation. Its path is exported as COURSIER_EXTRA_MIRRORS, so that coursier-based tools (sbt, mill, scala-cli…) in later steps use these mirrors too. The user''s own coursier mirror config is left untouched, and if COURSIER_EXTRA_MIRRORS is already set, the mirrors of that file are kept. The "from" side may be a comma-separated list of source URLs. Unlike customRepositories / disableDefaultRepos, mirrors are applied at the resolver level to every repository coursier sees — including ones declared inside app descriptors that customRepositories cannot override. See https://get-coursier.io/docs/other-mirrors'
+    required: false
+    default: ''
+  extraJvmArgs:
+    description: 'Space-separated list of -D JVM property args passed to every cs invocation. The -J prefix is added automatically if missing (e.g. -Dhttps.proxyHost=proxy.example.com -Dhttps.proxyPort=8080)'
+    required: false
+    default: ''
+  requireChecksum:
+    description: 'Whether to require the downloaded Coursier launcher to be checked against a checksum pinned in the action. Only the default Coursier version has pinned checksums, so when enabled, version must be left empty (or set to the default version).'
+    required: false
+    default: 'false'
+  useContainerImage:
+    description: 'Deprecated alias for launcher: container.'
+    required: false
+    default: 'false'
+  launcher:
+    description: 'Coursier launcher to use. Leave empty (default) to install the default native binary launcher when available (on Windows ARM64, the jpackage JVM distribution cs-aarch64-pc-win32-jvm.zip). Accepts JVM launchers "thin", "jvm", and "assembly", or native launcher flavors such as "container", "compat", and "static".'
+    required: false
+    default: ''
+  preferredLauncher:
+    description: 'Preferred native Coursier launcher flavor (for example, "container", "compat", or "static"). Falls back to the default launcher when the flavored launcher returns a 4xx HTTP response. JVM launcher values are not accepted.'
+    required: false
+    default: ''
+outputs:
+  cs-version:
+    description: 'Version of the installed Coursier, as reported by "cs version" (e.g. the actual nightly version when version is "nightly")'
+  java-home:
+    description: 'JAVA_HOME in effect after the action: the JVM installed by Coursier, or the pre-existing JAVA_HOME when no jvm input was given and JAVA_HOME was already set'
+  cs-bin-dir:
+    description: 'Directory the apps were installed to (also exported as COURSIER_BIN_DIR). Only set when apps are installed; not set (so it evaluates to an empty string) when apps is empty'
+runs:
+  pre: chainguard-phonehome.js
+  using: 'node24'
+  main: 'dist/index.js'

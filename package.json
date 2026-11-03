@@ -1,0 +1,56 @@
+{
+  "name": "coursier-setup-action",
+  "version": "1.0.0",
+  "private": true,
+  "description": "GitHub Action that installs Coursier, a JVM, and JVM / Scala command-line tools",
+  "scripts": {
+    "build": "tsc",
+    "format": "prettier --write \"**/*.ts\"",
+    "format-check": "prettier --check \"**/*.ts\"",
+    "lint": "eslint \"src/**/*.ts\"",
+    "package": "esbuild src/index.ts --bundle --platform=node --target=node24 --outfile=dist/index.js --sourcemap",
+    "test": "tsc -p tsconfig.test.json && esbuild \"src/*.test.ts\" --bundle --platform=node --target=node24 --outdir=test-build --log-level=warning && node --test \"test-build/*.test.js\"",
+    "all": "npm run build && npm run format-check && npm run lint && npm test && npm run package"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/coursier/setup-action.git"
+  },
+  "homepage": "https://github.com/coursier/setup-action#readme",
+  "bugs": {
+    "url": "https://github.com/coursier/setup-action/issues"
+  },
+  "keywords": [
+    "actions",
+    "github-actions",
+    "coursier",
+    "setup",
+    "scala",
+    "java",
+    "jvm",
+    "sbt",
+    "scalafmt",
+    "scala-cli"
+  ],
+  "author": "Alexey Alekhin",
+  "license": "MIT",
+  "dependencies": {
+    "@actions/core": "^3.0.1",
+    "@actions/exec": "^3.0.0",
+    "@actions/tool-cache": "^4.0.0",
+    "compare-versions": "^6.1.1"
+  },
+  "devDependencies": {
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "@types/node": "^26.6.6",
+    "@typescript-eslint/eslint-plugin": "^8.58.0",
+    "@typescript-eslint/parser": "^8.72.1",
+    "esbuild": "^0.28.2",
+    "eslint": "^10.13.0",
+    "globals": "^17.13.0",
+    "js-yaml": "^5.5.0",
+    "prettier": "3.9.10",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.72.1"
+  }
+}

@@ -1,0 +1,31 @@
+name: Test basic usage
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+      - name: Assert outputs
+        env:
+          CS_VERSION: ${{ steps.action.outputs.cs-version }}
+          JAVA_HOME_OUT: ${{ steps.action.outputs.java-home }}
+          BIN_DIR: ${{ steps.action.outputs.cs-bin-dir }}
+        run: |
+          echo "cs-version: $CS_VERSION"
+          echo "java-home: $JAVA_HOME_OUT"
+          echo "cs-bin-dir: $BIN_DIR"
+          if [ -z "$CS_VERSION" ]; then echo "FAIL: cs-version empty"; exit 1; fi
+          if [ -z "$JAVA_HOME_OUT" ] || [ ! -d "$JAVA_HOME_OUT" ]; then echo "FAIL: java-home missing"; exit 1; fi
+          if [ -z "$BIN_DIR" ] || [ ! -d "$BIN_DIR" ]; then echo "FAIL: cs-bin-dir missing"; exit 1; fi
+          if [ "$COURSIER_BIN_DIR" != "$BIN_DIR" ]; then echo "FAIL: COURSIER_BIN_DIR='$COURSIER_BIN_DIR' != '$BIN_DIR'"; exit 1; fi
+          ls -la "$BIN_DIR"
+          if ! ls "$BIN_DIR" | grep -q '^sbtn'; then echo "FAIL: sbtn not installed"; exit 1; fi
+          echo "PASS"
+      - name: Assert cs on PATH and works
+        run: |
+          which cs
+          cs version
+          echo "PASS"

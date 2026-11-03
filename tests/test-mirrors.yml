@@ -1,0 +1,33 @@
+name: Test mirrors
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - id: action
+        uses: .
+        with:
+          jvm: '17'
+          apps: ''
+          mirrors: |
+            https://repo1.maven.org/maven2=https://repo.maven.apache.org/maven2
+      - name: Assert mirror file exported
+        env:
+          CS_VERSION: ${{ steps.action.outputs.cs-version }}
+        run: |
+          echo "cs-version: $CS_VERSION"
+          echo "COURSIER_EXTRA_MIRRORS: $COURSIER_EXTRA_MIRRORS"
+          if [ -z "$CS_VERSION" ]; then echo "FAIL: cs-version empty"; exit 1; fi
+          if [ -z "$COURSIER_EXTRA_MIRRORS" ] || [ ! -f "$COURSIER_EXTRA_MIRRORS" ]; then
+            echo "FAIL: COURSIER_EXTRA_MIRRORS not set or file missing"; exit 1
+          fi
+          cat "$COURSIER_EXTRA_MIRRORS"
+          if ! grep -q 'repo.maven.apache.org/maven2' "$COURSIER_EXTRA_MIRRORS"; then
+            echo "FAIL: mirror target not in file"; exit 1
+          fi
+          if ! grep -q 'repo1.maven.org/maven2' "$COURSIER_EXTRA_MIRRORS"; then
+            echo "FAIL: mirror source not in file"; exit 1
+          fi
+          echo "PASS"
