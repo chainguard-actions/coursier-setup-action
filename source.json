@@ -4,8 +4,13 @@
   "version": "v3.0.3",
   "commit_sha": "3174df5c784a0c8724f06b7924b849551c40c39e",
   "url": "https://github.com/coursier/setup-action",
-  "policy_sha": "d636be7e43ef829af6e853da6b3c7566db9f72fe",
+  "policy_sha": "374911c4be584df24e6da57af2d990570ef0f859",
   "test_policy_sha": "843adf9e4b8f85d0c08b27b9d0b09dd094b54702",
   "test_agent_version": "2",
-  "harden_agent_version": "2"
+  "harden_agent_version": "2",
+  "dist_artifact": {
+    "gcs_uri": "gs://patch-actions-node-artifacts/dist-artifacts/coursier/setup-action/v3.0.3/sha256-fdcecb93013fba7184ab7a3f50abf659737c8343160cfa9f2a0341db78d89d2f.tar.gz",
+    "sha256": "fdcecb93013fba7184ab7a3f50abf659737c8343160cfa9f2a0341db78d89d2f",
+    "size_bytes": 585950
+  }
 }
